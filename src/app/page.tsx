@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useSession, signIn, signOut } from "next-auth/react"; 
 import { 
   GraduationCap, Sparkles, ArrowRight, RefreshCcw, Loader2, 
@@ -54,6 +54,16 @@ export default function Home() {
   const [hasil, setHasil] = useState<{ peluang: number; rataRata: number; pesanAI: string } | null>(null);
   const [isLoadingPrediksi, setIsLoadingPrediksi] = useState(false);
 
+  // State & Ref untuk Dropdown Custom Baru
+  const [showKampusSuggest, setShowKampusSuggest] = useState(false);
+  const [showProdiSuggest, setShowProdiSuggest] = useState(false);
+  const kampusRef = useRef<HTMLDivElement>(null);
+  const prodiRef = useRef<HTMLDivElement>(null);
+
+  // Filter Data untuk Dropdown
+  const filteredKampus = daftarKampus.filter(k => k.nama.toLowerCase().includes(searchKampusText.toLowerCase()));
+  const filteredProdi = daftarProdi.filter(p => p.toLowerCase().includes(searchProdiText.toLowerCase()));
+
   // Fungsi untuk memunculkan Toast
   const showToast = (message: string, type: 'error' | 'success' | 'info' = 'error') => {
     setToast({ message, type });
@@ -98,14 +108,25 @@ export default function Home() {
     fetchProdi();
   }, [selectedKampus.id]);
 
+  // Click Outside untuk Menutup Dropdown
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (kampusRef.current && !kampusRef.current.contains(event.target as Node)) {
+        setShowKampusSuggest(false);
+      }
+      if (prodiRef.current && !prodiRef.current.contains(event.target as Node)) {
+        setShowProdiSuggest(false);
+      }
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
+
   const handleKampusChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const text = e.target.value;
-    setSearchKampusText(text);
-    const matchedKampus = daftarKampus.find(k => k.nama.toLowerCase() === text.toLowerCase());
-    
-    if (matchedKampus) {
-      setSelectedKampus(matchedKampus);
-    } else {
+    setSearchKampusText(e.target.value);
+    setShowKampusSuggest(true);
+    // Reset state jika mengetik ulang
+    if (selectedKampus.id) {
       setSelectedKampus({ id: "", nama: "" });
       setDaftarProdi([]);
       setSelectedProdi("");
@@ -114,14 +135,21 @@ export default function Home() {
   };
 
   const handleProdiChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const text = e.target.value;
-    setSearchProdiText(text);
-    
-    if (daftarProdi.includes(text)) {
-      setSelectedProdi(text);
-    } else {
-      setSelectedProdi("");
-    }
+    setSearchProdiText(e.target.value);
+    setShowProdiSuggest(true);
+    if (selectedProdi) setSelectedProdi("");
+  };
+
+  const selectKampus = (kampus: Kampus) => {
+    setSearchKampusText(kampus.nama);
+    setSelectedKampus(kampus);
+    setShowKampusSuggest(false);
+  };
+
+  const selectProdi = (prodi: string) => {
+    setSearchProdiText(prodi);
+    setSelectedProdi(prodi);
+    setShowProdiSuggest(false);
   };
 
   const hitungPrediksi = async (e: React.FormEvent) => {
@@ -261,29 +289,42 @@ export default function Home() {
                       {isFetchingKampus && <Loader2 size={14} className="animate-spin text-blue-500" />}
                     </h3>
                     
-                    <div className="flex flex-col gap-1.5 w-full">
+                    {/* INPUT KAMPUS CUSTOM DROPDOWN */}
+                    <div className="flex flex-col gap-1.5 w-full" ref={kampusRef}>
                       <label className="text-sm font-medium text-slate-600 dark:text-slate-300 pl-1">Nama Universitas</label>
                       <div className="relative">
                         <input 
                           type="text"
-                          list="daftar-kampus"
                           className="w-full px-4 py-3 rounded-2xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-600 shadow-soft-inner focus:bg-white dark:focus:bg-slate-700 focus:border-blue-400 dark:focus:border-blue-500 focus:ring-4 focus:ring-blue-100/50 dark:focus:ring-blue-900/30 outline-none transition-all duration-300 text-slate-700 dark:text-slate-100 font-medium placeholder:text-slate-400"
                           value={searchKampusText}
                           onChange={handleKampusChange}
+                          onFocus={() => setShowKampusSuggest(true)}
                           placeholder="Ketik untuk mencari kampus..."
                           disabled={isFetchingKampus || isLoadingPrediksi}
                           autoComplete="off"
                         />
-                        <datalist id="daftar-kampus">
-                          {daftarKampus.map((kampus) => <option key={kampus.id} value={kampus.nama} />)}
-                        </datalist>
                         <div className="absolute inset-y-0 right-4 flex items-center pointer-events-none text-slate-400 dark:text-slate-500">
                           <Search size={18} />
                         </div>
+                        {showKampusSuggest && searchKampusText.length > 0 && filteredKampus.length > 0 && (
+                          <div className="absolute z-50 w-full mt-2 max-h-60 overflow-y-auto bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-2xl shadow-xl scrollbar-hide">
+                            {filteredKampus.map((kampus) => (
+                              <button
+                                key={kampus.id}
+                                type="button"
+                                className="w-full text-left px-4 py-3 text-sm hover:bg-blue-50 dark:hover:bg-blue-900/20 text-slate-700 dark:text-slate-200 transition-colors border-b border-slate-200 dark:border-slate-700/50 last:border-0"
+                                onClick={() => selectKampus(kampus)}
+                              >
+                                {kampus.nama}
+                              </button>
+                            ))}
+                          </div>
+                        )}
                       </div>
                     </div>
 
-                    <div className="flex flex-col gap-1.5 w-full">
+                    {/* INPUT PRODI CUSTOM DROPDOWN */}
+                    <div className="flex flex-col gap-1.5 w-full" ref={prodiRef}>
                       <label className="text-sm font-medium text-slate-600 dark:text-slate-300 pl-1 flex items-center gap-2">
                         Program Studi
                         {isFetchingProdi && <Loader2 size={12} className="animate-spin text-blue-500" />}
@@ -291,20 +332,31 @@ export default function Home() {
                       <div className="relative">
                         <input 
                           type="text"
-                          list="daftar-prodi"
                           className="w-full px-4 py-3 rounded-2xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-600 shadow-soft-inner focus:bg-white dark:focus:bg-slate-700 focus:border-blue-400 dark:focus:border-blue-500 focus:ring-4 focus:ring-blue-100/50 dark:focus:ring-blue-900/30 outline-none transition-all duration-300 text-slate-700 dark:text-slate-100 font-medium placeholder:text-slate-400"
                           value={searchProdiText}
                           onChange={handleProdiChange}
+                          onFocus={() => setShowProdiSuggest(true)}
                           placeholder={!selectedKampus.id ? "Pilih kampus terlebih dahulu" : isFetchingProdi ? "Mencari jurusan..." : "Ketik untuk mencari jurusan..."}
                           disabled={isFetchingProdi || daftarProdi.length === 0 || isLoadingPrediksi}
                           autoComplete="off"
                         />
-                        <datalist id="daftar-prodi">
-                          {daftarProdi.map((prodi, idx) => <option key={idx} value={prodi} />)}
-                        </datalist>
                         <div className="absolute inset-y-0 right-4 flex items-center pointer-events-none text-slate-400 dark:text-slate-500">
                           <Search size={18} />
                         </div>
+                        {showProdiSuggest && searchProdiText.length > 0 && filteredProdi.length > 0 && (
+                          <div className="absolute z-50 w-full mt-2 max-h-60 overflow-y-auto bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-2xl shadow-xl scrollbar-hide">
+                            {filteredProdi.map((prodi, idx) => (
+                              <button
+                                key={idx}
+                                type="button"
+                                className="w-full text-left px-4 py-3 text-sm hover:bg-blue-50 dark:hover:bg-blue-900/20 text-slate-700 dark:text-slate-200 transition-colors border-b border-slate-200 dark:border-slate-700/50 last:border-0"
+                                onClick={() => selectProdi(prodi)}
+                              >
+                                {prodi}
+                              </button>
+                            ))}
+                          </div>
+                        )}
                       </div>
                     </div>
                   </div>
