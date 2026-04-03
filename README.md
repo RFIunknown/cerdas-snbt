@@ -6,7 +6,7 @@
 
 | Halaman Autentikasi | Input Skor UTBK | Analisis AI |
 | :---: | :---: | :---: |
-| ![Login](images/screenshot1.png) | ![Input](images/screenshot2.png) | ![Hasil](images/screenshot3.png) |
+| ![Login](images/Screenshot1.png) | ![Input](images/Screenshot2.png) | ![Hasil](images/Screenshot3.png) |
 
 CERDAS adalah platform berbasis web yang dirancang untuk menganalisis peluang kelulusan Seleksi Nasional Berdasarkan Tes (SNBT). Aplikasi ini menggunakan integrasi Large Language Model (LLM) untuk memberikan umpan balik akademik yang personal berdasarkan skor TryOut pengguna.
 
