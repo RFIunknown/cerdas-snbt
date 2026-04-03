@@ -31,7 +31,7 @@ CERDAS adalah platform berbasis web yang dirancang untuk menganalisis peluang ke
 1. Kloning repositori:
    ```bash
    git clone [https://github.com/RFIunknown/cerdas-snbt.git](https://github.com/RFIunknown/cerdas-snbt.git)
-   cd cerdas
+   cd cerdas-snbt
    ```
 
 2. Instalasi dependensi:
