@@ -1,6 +1,6 @@
 # CERDAS (Cek Evaluasi Rata-rata Data Analisis SNBT)
 
-**[Lihat Live Demo Aplikasi](https://link-website-anda.com)**
+**[Lihat Live Demo Aplikasi](.)**
 
 ## Tampilan Aplikasi
 
