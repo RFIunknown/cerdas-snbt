@@ -30,7 +30,7 @@ CERDAS adalah platform berbasis web yang dirancang untuk menganalisis peluang ke
 
 1. Kloning repositori:
    ```bash
-   git clone [https://github.com/username-anda/cerdas.git](https://github.com/username-anda/cerdas.git)
+   git clone [https://github.com/RFIunknown/cerdas-snbt.git](https://github.com/RFIunknown/cerdas-snbt.git)
    cd cerdas
    ```
 
@@ -53,13 +53,12 @@ CERDAS adalah platform berbasis web yang dirancang untuk menganalisis peluang ke
    npm run dev
    ```
 
-## Penafian
+## DISCLAIMER
 
 Hasil prediksi ini bersifat simulasi berdasarkan algoritma heuristik dan data historis. Keputusan resmi kelulusan sepenuhnya merupakan wewenang panitia SNPMB.
 
 ## Kontributor
 
 Dikembangkan oleh **Muhammad Rifai**.
-Portfolio: [mrfai.web.id](https://mrfai.web.id)
 
 Lisensi MIT
