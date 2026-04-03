@@ -1,8 +1,17 @@
 {
-  "name": "CERDAS",
+  "name": "cerdas",
   "version": "0.1.0",
   "description": "Cek Evaluasi Rata-rata Data Analisis SNBT",
   "private": true,
+  "author": "Muhammad Rifai",
+  "keywords": [
+    "nextjs",
+    "snbt",
+    "utbk",
+    "ai",
+    "prediksi",
+    "groq"
+  ],
   "scripts": {
     "dev": "next dev",
     "build": "next build",

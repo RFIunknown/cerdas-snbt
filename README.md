@@ -1,56 +1,65 @@
-# Prediksi Lolos SNBT AI
+# CERDAS (Cek Evaluasi Rata-rata Data Analisis SNBT)
 
-Aplikasi berbasis web untuk membantu calon mahasiswa memprediksi peluang kelulusan SNBT (Seleksi Nasional Berdasarkan Tes) menggunakan algoritma heuristik dan kecerdasan buatan (AI) dari Groq.
+**[Lihat Live Demo Aplikasi](https://link-website-anda.com)**
+
+## Tampilan Aplikasi
+
+| Halaman Autentikasi | Input Skor UTBK | Analisis AI |
+| :---: | :---: | :---: |
+| ![Login](images/screenshot1.png) | ![Input](images/screenshot2.png) | ![Hasil](images/screenshot3.png) |
+
+CERDAS adalah platform berbasis web yang dirancang untuk menganalisis peluang kelulusan Seleksi Nasional Berdasarkan Tes (SNBT). Aplikasi ini menggunakan integrasi Large Language Model (LLM) untuk memberikan umpan balik akademik yang personal berdasarkan skor TryOut pengguna.
 
 ## Fitur Utama
 
-* **Autentikasi Aman**: Login terintegrasi menggunakan Google (NextAuth.js).
-* **Analisis AI Pintar**: Menggunakan model LLaMA 3.1 via Groq SDK untuk evaluasi skor TryOut.
-* **Keamanan Ketat**: Dilengkapi Rate Limiting (Anti-Spam), Input Sanitization, dan Security Headers.
-* **UI/UX Modern**: Pencarian prodi otomatis, opsi input detail/rata-rata, dan fitur Dark Mode.
+* **Analisis AI**: Evaluasi mendalam menggunakan LLaMA 3.1 via Groq SDK.
+* **Autentikasi Google**: Sistem login aman menggunakan NextAuth.js.
+* **Keamanan Tingkat Produksi**: Implementasi Rate Limiting, Input Sanitization, dan Security Headers.
+* **Pencarian Pintar**: Navigasi otomatis untuk pangkalan data Universitas dan Program Studi.
+* **Antarmuka Modern**: Desain responsif dengan dukungan Dark Mode.
 
-## Teknologi
+## Teknologi Utama
 
-* Next.js 14 (App Router)
-* TypeScript
-* Tailwind CSS
-* NextAuth.js
-* Groq SDK
+* **Framework**: Next.js 14 (App Router)
+* **Bahasa**: TypeScript
+* **Styling**: Tailwind CSS
+* **AI Engine**: Groq Cloud SDK
+* **Autentikasi**: NextAuth.js
 
-## Persiapan Instalasi
+## Panduan Instalasi
 
-1. Clone repositori ini:
+1. Kloning repositori:
    ```bash
-   git clone [https://github.com/username-anda/nama-repo.git](https://github.com/username-anda/nama-repo.git)
-   cd nama-repo
+   git clone [https://github.com/username-anda/cerdas.git](https://github.com/username-anda/cerdas.git)
+   cd cerdas
    ```
 
-2. Install dependensi:
+2. Instalasi dependensi:
    ```bash
    npm install
    ```
 
-3. Buat file `.env.local` pada direktori utama dan tambahkan kredensial berikut:
+3. Konfigurasi Environment Variables (`.env.local`):
    ```env
-   GROQ_API_KEY=kunci_api_groq_anda
+   GROQ_API_KEY=kunci_api_anda
    NEXTAUTH_URL=http://localhost:3000
-   NEXTAUTH_SECRET=kunci_rahasia_acak_anda
-   GOOGLE_CLIENT_ID=client_id_google_anda
-   GOOGLE_CLIENT_SECRET=client_secret_google_anda
+   NEXTAUTH_SECRET=kunci_rahasia_anda
+   GOOGLE_CLIENT_ID=google_id_anda
+   GOOGLE_CLIENT_SECRET=google_secret_anda
    ```
 
-4. Jalankan aplikasi di tahap pengembangan:
+4. Jalankan aplikasi:
    ```bash
    npm run dev
    ```
 
-## Catatan
+## Penafian
 
-Hasil yang diberikan oleh aplikasi ini bersifat simulasi dan prediksi. Skor dan peluang yang ditampilkan bukan merupakan keputusan resmi dari panitia SNPMB.
+Hasil prediksi ini bersifat simulasi berdasarkan algoritma heuristik dan data historis. Keputusan resmi kelulusan sepenuhnya merupakan wewenang panitia SNPMB.
 
-## Pembuat
+## Kontributor
 
-Dibuat oleh **Muhammad Rifai**. 
-Kunjungi portofolio selengkapnya di [mrfai.web.id](https://mrfai.web.id).
+Dikembangkan oleh **Muhammad Rifai**.
+Portfolio: [mrfai.web.id](https://mrfai.web.id)
 
-Lisensi MIT.
+Lisensi MIT
