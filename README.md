@@ -1,6 +1,6 @@
 # CERDAS (Cek Evaluasi Rata-rata Data Analisis SNBT)
 
-**[Lihat Live Demo Aplikasi](.)**
+**[Lihat Live Demo Aplikasi](https://cerdas-snbt.vercel.app)**
 
 ## Tampilan Aplikasi
 
