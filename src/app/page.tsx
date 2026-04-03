@@ -13,11 +13,12 @@ interface Kampus {
   nama: string;
 }
 
+// PERBAIKAN DI SINI: Ditambahkan h-full pada div, dan mt-auto pada input
 const InputSkor = ({ label, ...props }: any) => (
-  <div className="flex flex-col gap-1.5 w-full">
+  <div className="flex flex-col gap-1.5 w-full h-full">
     <label className="text-sm font-medium text-slate-600 dark:text-slate-300 pl-1 transition-colors">{label}</label>
     <input 
-      className="w-full px-4 py-3 rounded-2xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-600 shadow-soft-inner focus:bg-white dark:focus:bg-slate-700 focus:border-blue-400 dark:focus:border-blue-400 focus:ring-4 focus:ring-blue-100/50 dark:focus:ring-blue-900/30 outline-none transition-all duration-300 text-slate-700 dark:text-slate-100 font-medium placeholder:text-slate-400 dark:placeholder:text-slate-500"
+      className="mt-auto w-full px-4 py-3 rounded-2xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-600 shadow-soft-inner focus:bg-white dark:focus:bg-slate-700 focus:border-blue-400 dark:focus:border-blue-400 focus:ring-4 focus:ring-blue-100/50 dark:focus:ring-blue-900/30 outline-none transition-all duration-300 text-slate-700 dark:text-slate-100 font-medium placeholder:text-slate-400 dark:placeholder:text-slate-500"
       {...props} 
     />
   </div>
@@ -37,7 +38,7 @@ export default function Home() {
   }, []);
 
   const [modeInput, setModeInput] = useState<'detail' | 'ratarata'>('detail');
-  const [skor, setSkor] = useState({ pu: "", pk: "", pbm: "", litInd: "", litIng: "" });
+  const [skor, setSkor] = useState({ pu: "", ppu: "", pbm: "", pk: "", litInd: "", litIng: "", pm: "" });
   const [skorRataRata, setSkorRataRata] = useState("");
   
   const [daftarKampus, setDaftarKampus] = useState<Kampus[]>([]);
@@ -163,8 +164,8 @@ export default function Home() {
 
     let finalRataRata = 0;
     if (modeInput === 'detail') {
-      const totalSkor = Number(skor.pu) + Number(skor.pk) + Number(skor.pbm) + Number(skor.litInd) + Number(skor.litIng);
-      finalRataRata = Math.round(totalSkor / 5);
+      const totalSkor = Number(skor.pu) + Number(skor.ppu) + Number(skor.pbm) + Number(skor.pk) + Number(skor.litInd) + Number(skor.litIng) + Number(skor.pm);
+      finalRataRata = Math.round(totalSkor / 7);
     } else {
       finalRataRata = Number(skorRataRata);
     }
@@ -361,8 +362,8 @@ export default function Home() {
                     </div>
                   </div>
 
-                  <div className="space-y-4">
-                    <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-2 pl-1">
+                  <div className="space-y-6">
+                    <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pl-1">
                       <h3 className="text-sm font-bold text-slate-700 dark:text-slate-200 uppercase tracking-wider">Skor TryOut</h3>
                       
                       <div className="flex bg-slate-100 dark:bg-slate-800 p-1 rounded-xl w-fit transition-colors">
@@ -384,58 +385,91 @@ export default function Home() {
                     </div>
 
                    {modeInput === 'detail' ? (
-                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
-                        <InputSkor 
-                          label="Penalaran Umum (PU)" 
-                          type="number" 
-                          placeholder="0 - 1000" 
-                          value={skor.pu} 
-                          onChange={(e: React.ChangeEvent<HTMLInputElement>) => setSkor({...skor, pu: e.target.value})} 
-                          required 
-                          disabled={isLoadingPrediksi} 
-                          min="0" max="1000" 
-                        />
-                        <InputSkor 
-                          label="Pengetahuan Kuantitatif (PK)" 
-                          type="number" 
-                          placeholder="0 - 1000" 
-                          value={skor.pk} 
-                          onChange={(e: React.ChangeEvent<HTMLInputElement>) => setSkor({...skor, pk: e.target.value})} 
-                          required 
-                          disabled={isLoadingPrediksi} 
-                          min="0" max="1000" 
-                        />
-                        <InputSkor 
-                          label="Literasi Bahasa Indonesia" 
-                          type="number" 
-                          placeholder="0 - 1000" 
-                          value={skor.litInd} 
-                          onChange={(e: React.ChangeEvent<HTMLInputElement>) => setSkor({...skor, litInd: e.target.value})} 
-                          required 
-                          disabled={isLoadingPrediksi} 
-                          min="0" max="1000" 
-                        />
-                        <InputSkor 
-                          label="Literasi Bahasa Inggris" 
-                          type="number" 
-                          placeholder="0 - 1000" 
-                          value={skor.litIng} 
-                          onChange={(e: React.ChangeEvent<HTMLInputElement>) => setSkor({...skor, litIng: e.target.value})} 
-                          required 
-                          disabled={isLoadingPrediksi} 
-                          min="0" max="1000" 
-                        />
-                        <div className="sm:col-span-2">
-                          <InputSkor 
-                            label="Pemahaman Bacaan dan Menulis (PBM)" 
-                            type="number" 
-                            placeholder="0 - 1000" 
-                            value={skor.pbm} 
-                            onChange={(e: React.ChangeEvent<HTMLInputElement>) => setSkor({...skor, pbm: e.target.value})} 
-                            required 
-                            disabled={isLoadingPrediksi} 
-                            min="0" max="1000" 
-                          />
+                      <div className="space-y-6">
+                        {/* BAGIAN 1: TPS */}
+                        <div className="bg-slate-50 dark:bg-slate-800/30 p-4 rounded-2xl border border-slate-100 dark:border-slate-700/50">
+                          <h4 className="text-xs font-bold text-slate-500 dark:text-slate-400 uppercase mb-4 pl-1">1. Tes Potensi Skolastik (TPS)</h4>
+                          <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
+                            <InputSkor 
+                              label="Penalaran Umum (PU)" 
+                              type="number" 
+                              placeholder="0 - 1000" 
+                              value={skor.pu} 
+                              onChange={(e: React.ChangeEvent<HTMLInputElement>) => setSkor({...skor, pu: e.target.value})} 
+                              required 
+                              disabled={isLoadingPrediksi} 
+                              min="0" max="1000" 
+                            />
+                            <InputSkor 
+                              label="Penge. & Pemahaman Umum (PPU)" 
+                              type="number" 
+                              placeholder="0 - 1000" 
+                              value={skor.ppu} 
+                              onChange={(e: React.ChangeEvent<HTMLInputElement>) => setSkor({...skor, ppu: e.target.value})} 
+                              required 
+                              disabled={isLoadingPrediksi} 
+                              min="0" max="1000" 
+                            />
+                            <InputSkor 
+                              label="Pemahaman Bacaan & Menulis (PBM)" 
+                              type="number" 
+                              placeholder="0 - 1000" 
+                              value={skor.pbm} 
+                              onChange={(e: React.ChangeEvent<HTMLInputElement>) => setSkor({...skor, pbm: e.target.value})} 
+                              required 
+                              disabled={isLoadingPrediksi} 
+                              min="0" max="1000" 
+                            />
+                            <InputSkor 
+                              label="Pengetahuan Kuantitatif (PK)" 
+                              type="number" 
+                              placeholder="0 - 1000" 
+                              value={skor.pk} 
+                              onChange={(e: React.ChangeEvent<HTMLInputElement>) => setSkor({...skor, pk: e.target.value})} 
+                              required 
+                              disabled={isLoadingPrediksi} 
+                              min="0" max="1000" 
+                            />
+                          </div>
+                        </div>
+
+                        {/* BAGIAN 2: LITERASI & PM */}
+                        <div className="bg-slate-50 dark:bg-slate-800/30 p-4 rounded-2xl border border-slate-100 dark:border-slate-700/50">
+                          <h4 className="text-xs font-bold text-slate-500 dark:text-slate-400 uppercase mb-4 pl-1">2. Literasi & Penalaran Matematika</h4>
+                          <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
+                            <InputSkor 
+                              label="Literasi Bahasa Indonesia" 
+                              type="number" 
+                              placeholder="0 - 1000" 
+                              value={skor.litInd} 
+                              onChange={(e: React.ChangeEvent<HTMLInputElement>) => setSkor({...skor, litInd: e.target.value})} 
+                              required 
+                              disabled={isLoadingPrediksi} 
+                              min="0" max="1000" 
+                            />
+                            <InputSkor 
+                              label="Literasi Bahasa Inggris" 
+                              type="number" 
+                              placeholder="0 - 1000" 
+                              value={skor.litIng} 
+                              onChange={(e: React.ChangeEvent<HTMLInputElement>) => setSkor({...skor, litIng: e.target.value})} 
+                              required 
+                              disabled={isLoadingPrediksi} 
+                              min="0" max="1000" 
+                            />
+                            <div className="sm:col-span-2">
+                              <InputSkor 
+                                label="Penalaran Matematika (PM)" 
+                                type="number" 
+                                placeholder="0 - 1000" 
+                                value={skor.pm} 
+                                onChange={(e: React.ChangeEvent<HTMLInputElement>) => setSkor({...skor, pm: e.target.value})} 
+                                required 
+                                disabled={isLoadingPrediksi} 
+                                min="0" max="1000" 
+                              />
+                            </div>
+                          </div>
                         </div>
                       </div>
                     ) : (
